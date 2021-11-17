@@ -1,20 +1,26 @@
 import React from 'react';
-import {ScrollView, StatusBar, StyleSheet, Text, View} from 'react-native';
+import welcome from './src/screens/welcome';
+import home from './src/screens/home';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+
+const Stack = createNativeStackNavigator();
 
 const App = () => {
   return (
-    <View style={styles.container}>
-      <Text>Starting Point</Text>
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Welcome"
+          component={welcome}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen 
+        name="Home" 
+        component={home} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    marginTop: 0,
-    flex: 1,
-    backgroundColor: '#EEDEC1',
-  },
-});
 
 export default App;
