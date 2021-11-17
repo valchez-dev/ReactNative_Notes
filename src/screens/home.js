@@ -1,17 +1,40 @@
 import React from 'react';
-import {Text, StyleSheet, View} from 'react-native';
+import {Text, StyleSheet, TouchableOpacity, View} from 'react-native';
 
 const home = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Home Screen</Text>
+      <Text>Home Screen</Text>
+      <TouchableOpacity style={styles.btn}>
+        <Text style={styles.btnText}>+</Text>
+        </TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {},
-  text: {},
+  container: {
+    flex: 1,
+    backgroundColor: '#94B3FD',
+  },
+  btn: {
+    width: 60,
+    height:60,
+    borderRadius:50,
+    backgroundColor:"#FBF46D",
+    justifyContent:'center',
+    alignItems:'center',
+    position:'absolute',
+    bottom:30,
+    right:30,
+    elevation:5
+  },
+  btnText:{
+    textAlign:'center',
+    fontWeight:'bold',
+    color:'#000000',
+    fontSize:30
+  }
 });
 
 export default home;
