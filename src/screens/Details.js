@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Text,
   StyleSheet,
@@ -18,6 +18,19 @@ const Details = ({navigation}) => {
 
   const {tasks, taskID} = useSelector(state => state.taskReducer);
   const dispatch = useDispatch();
+
+  useEffect(()=>{
+    getTask()
+  },[]);
+
+  const getTask = () => {
+    const Task = tasks.find(task=> task.id === taskID);
+    if(Task){
+      setTitle(Task.title);
+      setDescription(Task.description);
+    }
+  }
+
 
   const saveTaskButton = () => {
     Keyboard.dismiss();
