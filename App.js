@@ -8,17 +8,27 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import {Provider} from 'react-redux';
-import store from './src/redux/store';
+import {store} from './src/redux/store';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const HomeTabs = () => {
   return (
-    <Tab.Navigator>
-      <Tab.Screen options={{headerShown: false}} name="ToDo" component={Home} />
-      <Tab.Screen options={{headerShown: false}} name="Done" component={Done} />
-    </Tab.Navigator>
+    <Provider store={store}>
+      <Tab.Navigator>
+        <Tab.Screen
+          options={{headerShown: false}}
+          name="ToDo"
+          component={Home}
+        />
+        <Tab.Screen
+          options={{headerShown: false}}
+          name="Done"
+          component={Done}
+        />
+      </Tab.Navigator>
+    </Provider>
   );
 };
 
