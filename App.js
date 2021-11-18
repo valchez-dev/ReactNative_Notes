@@ -1,7 +1,8 @@
 import React from 'react';
-import welcome from './src/screens/welcome';
-import home from './src/screens/home';
-import done from './src/screens/done';
+import Welcome from './src/screens/Welcome';
+import Home from './src/screens/Home';
+import Done from './src/screens/Done';
+import Details from './src/screens/Details';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -12,8 +13,8 @@ const Tab = createBottomTabNavigator();
 const HomeTabs = () => {
   return (
     <Tab.Navigator>
-      <Tab.Screen options={{headerShown: false}} name="ToDo" component={home} />
-      <Tab.Screen options={{headerShown: false}} name="Done" component={done} />
+      <Tab.Screen options={{headerShown: false}} name="ToDo" component={Home} />
+      <Tab.Screen options={{headerShown: false}} name="Done" component={Done} />
     </Tab.Navigator>
   );
 };
@@ -24,11 +25,12 @@ const App = () => {
       <Stack.Navigator>
         <Stack.Screen
           name="Welcome"
-          component={welcome}
+          component={Welcome}
           options={{headerShown: false}}
         />
         <Stack.Screen name="Home" component={HomeTabs} />
-        <Stack.Screen name="Done" component={done} />
+        <Stack.Screen name="Done" component={Done} />
+        <Stack.Screen name="Details" component={Details} />
       </Stack.Navigator>
     </NavigationContainer>
   );

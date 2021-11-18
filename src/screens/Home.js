@@ -1,11 +1,13 @@
 import React from 'react';
 import {Text, StyleSheet, TouchableOpacity, View} from 'react-native';
 
-const home = () => {
+const Home = ({navigation}) => {
   return (
     <View style={styles.container}>
       <Text>Home Screen</Text>
-      <TouchableOpacity style={styles.btn}>
+      <TouchableOpacity 
+      onPress={()=> navigation.navigate("Details")} 
+      style={styles.btn}>
         <Text style={styles.btnText}>+</Text>
         </TouchableOpacity>
     </View>
@@ -37,4 +39,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default home;
+export default Home;

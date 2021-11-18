@@ -1,12 +1,12 @@
 import React, {useEffect} from "react"
 import { Text, StyleSheet, Image, View } from "react-native"
 
-const welcome = ({navigation}) => {
+const Welcome = ({navigation}) => {
 
 useEffect(()=> {
     setTimeout(()=>{
         navigation.replace('Home');
-    },1500);
+    },1000);
 
 },[])
 
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default welcome;
+export default Welcome;
 
 
 
