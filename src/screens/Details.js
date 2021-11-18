@@ -45,7 +45,21 @@ const Details = ({navigation}) => {
           description,
         };
 
-        let newTasks = [...tasks, Task];
+
+        //if exist = update, if not = create
+        // -1 => no element
+        const index = tasks.findIndex(task => task.id === taskID);
+        let newTasks = [];
+
+        if(index > -1){
+          newTasks = [...tasks];
+          newTasks[index]=Task;
+        }else{
+          newTasks=[...tasks, Task];
+        }
+
+
+
         AsyncStorage.setItem('tasks', JSON.stringify(newTasks))
           .then(() => {
             dispatch(setTasks(newTasks));
