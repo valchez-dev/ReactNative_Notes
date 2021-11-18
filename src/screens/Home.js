@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect } from 'react';
-import {Text, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Text, StyleSheet, TouchableOpacity, View, FlatList} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {setTasks, setTaskID} from '../redux/actions';
 
@@ -26,7 +26,16 @@ const Home = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <Text>Home Screen</Text>
+      <FlatList 
+      data={tasks}
+      renderItem={({item})=>(
+        <TouchableOpacity 
+        style={styles.card}>
+          <Text>{item.title}</Text>
+          <Text>{item.description}</Text>
+        </TouchableOpacity>
+      )}
+      />
       <TouchableOpacity
         onPress={() => {
           dispatch(setTaskID(new Date().getMilliseconds()))
@@ -42,6 +51,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#94B3FD',
+  },
+  card:{
+    padding:10, 
+    margin:10,
+    width:'80%',
+    justifyContent:'center',
+    elevation:5,
+    borderColor:"#000000",
+    borderWidth:1,
+    borderRadius:10,
+    backgroundColor:"#009DAE"
   },
   btn: {
     width: 60,
