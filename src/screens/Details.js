@@ -43,6 +43,7 @@ const Details = ({navigation}) => {
           id: taskID,
           title,
           description,
+          checked: false
         };
 
 

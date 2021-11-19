@@ -3,6 +3,7 @@ import React, {useEffect} from 'react';
 import {Text, StyleSheet, TouchableOpacity, View, FlatList} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {setTasks, setTaskID} from '../redux/actions';
+import CheckBox from 'react-native-checkbox';
 
 const Home = ({navigation}) => {
   const {tasks} = useSelector(state => state.taskReducer);
@@ -23,10 +24,39 @@ const Home = ({navigation}) => {
       .catch(e => console.log(e));
   };
 
+  //delete
+  const deleteHandler = id => {
+    const filteredTasks = tasks.filter(task => task.id !== id);
+
+    AsyncStorage.setItem('tasks', JSON.stringify(filteredTasks))
+      .then(() => {
+        dispatch(setTasks(filteredTasks));
+      })
+      .catch(e => console.log(e + ' / in delete task button'));
+  };
+
+  //checkbox
+  const isCheckedHandler = id => {
+    const index = tasks.findIndex(task => task.id === id);
+
+    let newTasks = [];
+
+    if (index > -1) {
+      newTasks = [...tasks];
+      newTasks[index].checked = !newTasks[index].checked;
+
+      AsyncStorage.setItem('tasks', JSON.stringify(newTasks))
+        .then(() => {
+          dispatch(setTasks(newTasks));
+        })
+        .catch(e => console.log(e));
+    }
+  };
+
   return (
     <View style={styles.container}>
       <FlatList
-        data={tasks}
+        data={tasks.filter(task => task.checked === false)}
         renderItem={({item}) => (
           <TouchableOpacity
             style={styles.card}
@@ -34,12 +64,26 @@ const Home = ({navigation}) => {
               dispatch(setTaskID(item.id));
               navigation.navigate('Details');
             }}>
-            <Text numberOfLines={1} style={styles.title}>
-              {item.title}
-            </Text>
-            <Text numberOfLines={3} style={styles.description}>
-              {item.description}
-            </Text>
+            <CheckBox
+              label=""
+              checked={item.checked}
+              onChange={() => isCheckedHandler(item.id)}
+            />
+
+            <View style={styles.card_text}>
+              <Text numberOfLines={1} style={styles.title}>
+                {item.title}
+              </Text>
+              <Text numberOfLines={3} style={styles.description}>
+                {item.description}
+              </Text>
+            </View>
+
+            <TouchableOpacity onPress={() => deleteHandler(item.id)}>
+              <View style={styles.card_button}>
+                <Text style={styles.card_button_text}>Delete</Text>
+              </View>
+            </TouchableOpacity>
           </TouchableOpacity>
         )}
         keyExtractor={(item, index) => index.toString()}
@@ -59,18 +103,38 @@ const Home = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#94B3FD',
+    backgroundColor: '#BFD8B8',
   },
   card: {
     padding: 10,
-    margin: 10,
-    width: '80%',
-    justifyContent: 'center',
+    marginBottom: 5,
+    width: '100%',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row',
     elevation: 5,
     borderColor: '#000000',
     borderWidth: 1,
     borderRadius: 10,
-    backgroundColor: '#009DAE',
+    backgroundColor: '#E7EAB5',
+  },
+  card_text: {
+    flexDirection: 'column',
+  },
+  card_button: {
+    borderColor: '#000000',
+    borderWidth: 0.5,
+    borderRadius: 5,
+    backgroundColor: '#F1F7E7',
+    width: 55,
+    height: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  card_button_text: {
+    color: '#000000',
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
   title: {
     textAlign: 'left',
