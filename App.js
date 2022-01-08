@@ -1,49 +1,21 @@
 import React from 'react';
-import Welcome from './src/screens/Welcome';
 import Home from './src/screens/Home';
-import Done from './src/screens/Done';
 import Details from './src/screens/Details';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import {Provider} from 'react-redux';
 import {store} from './src/redux/store';
 
 const Stack = createNativeStackNavigator();
-const Tab = createBottomTabNavigator();
-
-const HomeTabs = () => {
-  return (
-    <Provider store={store}>
-      <Tab.Navigator>
-        <Tab.Screen
-          options={{headerShown: false}}
-          name="ToDo"
-          component={Home}
-        />
-        <Tab.Screen
-          options={{headerShown: false}}
-          name="Done"
-          component={Done}
-        />
-      </Tab.Navigator>
-    </Provider>
-  );
-};
+;
 
 const App = () => {
   return (
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen
-            name="Welcome"
-            component={Welcome}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen name="Home" component={HomeTabs} />
-          <Stack.Screen name="Done" component={Done} />
+          <Stack.Screen options={{headerShown: false}} name="Home" component={Home} />
           <Stack.Screen name="Details" component={Details} />
         </Stack.Navigator>
       </NavigationContainer>

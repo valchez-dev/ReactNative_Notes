@@ -1,9 +1,9 @@
 import { createStore, combineReducers, applyMiddleware } from "redux"; 
-import taskReducer from "./reducers";
+import noteReducer from "./reducers";
 import thunk from "redux-thunk";
 
 const rootReducer = combineReducers({
-    taskReducer
+    noteReducer
 });
 
 export const store = createStore(rootReducer, applyMiddleware(thunk));

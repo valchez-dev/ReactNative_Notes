@@ -1,18 +1,18 @@
-export const SET_TASKS = "SET_TASKS";
-export const SET_TASK_ID = "SET_TASK_ID";
+export const SET_NOTES = "set_notes";
+export const SET_NOTE_ID = "set_note_id";
 
 
-export const setTasks = tasks => dispatch => {
+export const setNotes = notes => dispatch => {
     dispatch({
-        type: SET_TASKS,
-        payload: tasks
+        type: SET_NOTES,
+        payload: notes
     })
 }
 
-export const setTaskID = taskId => dispatch => {
+export const setNoteID = noteId => dispatch => {
     dispatch({
-        type: SET_TASK_ID,
-        payload: taskId,
+        type: SET_NOTE_ID,
+        payload: noteId,
     })
 }
 

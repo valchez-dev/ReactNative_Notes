@@ -1,170 +1,86 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, {useEffect} from 'react';
-import {Text, StyleSheet, TouchableOpacity, View, FlatList} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
-import {setTasks, setTaskID} from '../redux/actions';
-import CheckBox from 'react-native-checkbox';
+import React, {useEffect, useState} from 'react';
+import {
+  Text,
+  StyleSheet,
+  View,
+  TextInput,
+} from 'react-native';
+
+import Card from '../components/card';
+import Fab from '../components/floating_action_button';
 
 const Home = ({navigation}) => {
-  const {tasks} = useSelector(state => state.taskReducer);
-  const dispatch = useDispatch();
+  const [input, setInput] = useState('');
 
-  useEffect(() => {
-    getTasks();
-  }, []);
-
-  const getTasks = () => {
-    AsyncStorage.getItem('tasks')
-      .then(tasks => {
-        const parsedTasks = JSON.parse(tasks);
-        if (parsedTasks && typeof parsedTasks === 'object') {
-          dispatch(setTasks(parsedTasks));
-        }
-      })
-      .catch(e => console.log(e));
+  //input
+  const inputHandler = text => {
+    setInput(text);
   };
 
   //delete
-  const deleteHandler = id => {
-    const filteredTasks = tasks.filter(task => task.id !== id);
+  const cardDeleteHandler = () => {};
 
-    AsyncStorage.setItem('tasks', JSON.stringify(filteredTasks))
-      .then(() => {
-        dispatch(setTasks(filteredTasks));
-      })
-      .catch(e => console.log(e + ' / in delete task button'));
-  };
+  //card pressed
+  const cardPressHandler = () => {};
 
-  //checkbox
-  const isCheckedHandler = id => {
-    const index = tasks.findIndex(task => task.id === id);
 
-    let newTasks = [];
+  //new note 
+  const addNoteHandler = () => {
 
-    if (index > -1) {
-      newTasks = [...tasks];
-      newTasks[index].checked = !newTasks[index].checked;
-
-      AsyncStorage.setItem('tasks', JSON.stringify(newTasks))
-        .then(() => {
-          dispatch(setTasks(newTasks));
-        })
-        .catch(e => console.log(e));
-    }
   };
 
   return (
-    <View style={styles.container}>
-      <FlatList
-        data={tasks.filter(task => task.checked === false)}
-        renderItem={({item}) => (
-          <TouchableOpacity
-            style={styles.card}
-            onPress={() => {
-              dispatch(setTaskID(item.id));
-              navigation.navigate('Details');
-            }}>
-            <CheckBox
-              label=""
-              checked={item.checked}
-              onChange={() => isCheckedHandler(item.id)}
-            />
+    <>
+      <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
 
-            <View style={styles.card_text}>
-              <Text numberOfLines={1} style={styles.title}>
-                {item.title}
-              </Text>
-              <Text numberOfLines={3} style={styles.description}>
-                {item.description}
-              </Text>
-            </View>
+      <View style={styles.container}>
+        <TextInput
+          value={input}
+          onChangeText={inputHandler}
+          style={styles.searchBar}
+          placeholder="Search..."
+        />
 
-            <TouchableOpacity onPress={() => deleteHandler(item.id)}>
-              <View style={styles.card_button}>
-                <Text style={styles.card_button_text}>Delete</Text>
-              </View>
-            </TouchableOpacity>
-          </TouchableOpacity>
-        )}
-        keyExtractor={(item, index) => index.toString()}
-      />
-      <TouchableOpacity
-        onPress={() => {
-          dispatch(setTaskID(new Date().getMilliseconds()));
-          navigation.navigate('Details');
-        }}
-        style={styles.btn}>
-        <Text style={styles.btnText}>+</Text>
-      </TouchableOpacity>
-    </View>
+        <View style={styles.placeholderView}>
+          <Text style={styles.placeholderText}>ADD NOTES</Text>
+        </View>
+
+
+        <Fab title="Add Note" onPressed={addNoteHandler} />
+
+      </View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#BFD8B8',
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    backgroundColor: '#fff',
   },
-  card: {
-    padding: 10,
-    marginBottom: 5,
-    width: '100%',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flexDirection: 'row',
-    elevation: 5,
-    borderColor: '#000000',
-    borderWidth: 1,
-    borderRadius: 10,
-    backgroundColor: '#E7EAB5',
-  },
-  card_text: {
-    flexDirection: 'column',
-  },
-  card_button: {
-    borderColor: '#000000',
+
+  searchBar: {
+    marginTop: 5,
     borderWidth: 0.5,
-    borderRadius: 5,
-    backgroundColor: '#F1F7E7',
-    width: 55,
-    height: 25,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  card_button_text: {
-    color: '#000000',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  title: {
-    textAlign: 'left',
+    borderRadius: 40,
+    paddingLeft: 15,
     fontSize: 18,
-    color: '#000000',
-    fontWeight: 'bold',
+    borderColor: '#000',
+    height: 40,
   },
-  description: {
-    textAlign: 'left',
-    fontSize: 15,
-    color: '#000000',
-    fontStyle: 'italic',
-  },
-  btn: {
-    width: 60,
-    height: 60,
-    borderRadius: 50,
-    backgroundColor: '#FBF46D',
-    justifyContent: 'center',
+
+  placeholderView: {
+    flex: 1,
+    justifyContent: 'flex-end',
     alignItems: 'center',
-    position: 'absolute',
-    bottom: 30,
-    right: 30,
-    elevation: 5,
   },
-  btnText: {
-    textAlign: 'center',
-    fontWeight: 'bold',
-    color: '#000000',
+
+  placeholderText: {
     fontSize: 30,
+    textTransform: 'uppercase',
+    opacity: 0.2,
+    fontWeight: 'bold',
   },
 });
 
